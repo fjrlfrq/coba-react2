@@ -22,22 +22,22 @@ export default class UserForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
-        this.props.add(this.state.name, this.state.phone)
+        this.props.submit({name: this.state.name, phone: this.state.phone})
         this.setState({name: '', phone: ''})
     }
 
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <div class="row mb-3">
+                <div className="row mb-3">
                     <label htmlFor="name" className="col-sm-2 col-form-label">Name</label>
-                    <div class="col-sm-10">
+                    <div className="col-sm-10">
                         <input type="text" className="form-control" id="name" name="name" placeholder="name" onChange={this.handleInputChange} value={this.state.name}></input>
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div className="row mb-3">
                     <label htmlFor="phone" className="col-sm-2 col-form-label">Phone</label>
-                    <div class="col-sm-10">
+                    <div className="col-sm-10">
                         <input type="text" className="form-control" id="phone" name="phone" placeholder="phone" onChange={this.handleInputChange} value={this.state.phone}></input>
                     </div>
                 </div>
