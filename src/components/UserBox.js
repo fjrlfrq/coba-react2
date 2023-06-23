@@ -81,6 +81,30 @@ export default class UserBox extends Component {
             })
     }
 
+    removeUser = (_id) => {
+        console.log(_id)
+        fetch(`http://localhost:3000/users/${_id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((response) => response.json()).then((data) => {
+                this.setState(function (state, props) {
+                    return {
+                        users: state.users.filter(item => item._id !== data.data._id)
+                    }
+                })
+            })
+    }
+
+    searchUser = (query = {}) => {
+        fetch(`http://localhost:3000/users?${new URLSearchParams(query)}`)
+            .then((response) => response.json())
+            .then((data) => {
+                this.setState({ users: data.data })
+            })
+    }
+
     render() {
         return (
             <div className="container">
@@ -91,7 +115,7 @@ export default class UserBox extends Component {
                     <div className="card-body">
                         <UserForm submit={this.addUser} />
                     </div>
-                    <UserList data={this.state.users} />
+                    <UserList data={this.state.users} remove={this.removeUser} />
                     <div className="card-footer">
 
                     </div>
