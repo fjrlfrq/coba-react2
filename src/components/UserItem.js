@@ -1,13 +1,97 @@
-export default function UserItem(props) {
-    return (
-        <tr>
-            <td>{props.no}</td>
-            <td>{props.name}</td>
-            <td>{props.phone}</td>
-            <td>
-                <button type="button" className="btn btn-warning"><i className="bi bi-pencil-fill">edit</i></button>
-                <button type="button" className="btn btn-danger" onClick={props.remove}>delete</button>
-            </td>
-        </tr>
-    )
+import react, { Component } from "react"
+
+export default class UserItem extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            name: props.user.name,
+            phone: props.user.phone,
+            isEdit: false
+        }
+    }
+
+    handleInputChange = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        const phone = target.phone;
+
+        this.setState({
+            [name]: value,
+            [phone]: value
+        });
+    }
+
+    handleEdit = () => {
+        this.setState({
+            isEdit: true
+        })
+    }
+
+    handleCancel = () => {
+        this.setState({
+            isEdit: false
+        })
+    }
+    
+    saveEdit = () => {
+        this.props.update({_id : this.props.user._id, name: this.props.user.name, phone: this.props.user.phone})
+        this.setState({
+            isEdit: false
+        })
+    }
+
+
+    render() {
+        return (
+            <tr>
+                <td>{this.props.no}</td>
+                <td>
+                    {this.state.isEdit ?
+                        <input
+                            className="form-control"
+                            type="text"
+                            name="name"
+                            value={this.state.name}
+                            placeholder="Masukkan nama"
+                            onChange={this.handleInputChange}
+                        /> 
+                        :
+                        this.state.name
+                    }
+                </td>
+                <td>
+                    {this.state.isEdit ?
+                        <input
+                            className="form-control"
+                            type="text"
+                            name="phone"
+                            value={this.state.phone}
+                            placeholder="Masukkan nomor"
+                            onChange={this.handleInputChange}
+                        /> 
+                        :
+                        this.state.phone
+                    }
+                </td>
+                {this.props.user.sent ?
+                    this.state.isEdit ?
+                        <td>
+                            <button type="button" className="btn btn-info" onClick={this.saveEdit}>Save</button>
+                            <button type="button" className="btn btn-warning" onClick={this.handleCancel}>Cancel</button>
+                        </td>
+                        :
+                        <td>
+                            <button type="button" className="btn btn-success" onClick={this.handleEdit}>Edit</button>
+                            <button type="button" className="btn btn-danger" onClick={this.props.remove}>Delete</button>
+                        </td>
+                    :
+                    <td>
+                        <button type="button" className="btn btn-warning" onClick={this.props.resend}>Resend</button>
+                    </td>
+                }
+            </tr>
+        )
+    }
 }

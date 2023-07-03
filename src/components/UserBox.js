@@ -1,3 +1,4 @@
+import { toHaveDisplayValue } from "@testing-library/jest-dom/matchers";
 import { Component } from "react";
 import UserForm from "./UserForm";
 import UserList from "./UserList";
@@ -28,7 +29,7 @@ export default class UserBox extends Component {
         const _id = Date.now().toString()
         this.setState(function (state, props) {
             return {
-                 users: [
+                users: [
                     ...state.users,
                     {
                         _id,
@@ -81,19 +82,77 @@ export default class UserBox extends Component {
             })
     }
 
+    updateUser = (_id, name, phone) => {
+        fetch(`http://localhost:3000/users/${_id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, phone }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                this.setState(function (state) {
+                    return {
+                        users: state.users.map(item => {
+                            if (item._id === _id) {
+                                return {
+                                    _id: data.data.id,
+                                    name: data.data.name,
+                                    phone: data.data.phone,
+                                    sent: true
+                                }
+                            }
+                            return item
+                        })
+                    }
+                })
+            })
+    }
+
     removeUser = (_id) => {
-        console.log(_id)
         fetch(`http://localhost:3000/users/${_id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             }
         }).then((response) => response.json()).then((data) => {
+            this.setState(function (state, props) {
+                return {
+                    users: state.users.filter(item => item._id !== data.data._id)
+                }
+            })
+        })
+    }
+
+    resendUser = ({ _id, name, phone }) => {
+        fetch('http://localhost:3000/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, phone }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
                 this.setState(function (state, props) {
                     return {
-                        users: state.users.filter(item => item._id !== data.data._id)
+                        users: state.users.map(item => {
+                            if (item._id === _id) {
+                                return {
+                                    _id: data.data.id,
+                                    name: data.data.name,
+                                    phone: data.data.phone,
+                                    sent: true
+                                }
+                            }
+                            return item
+                        })
                     }
                 })
+            })
+            .catch((error) => {
+                console.log('gagal resend')
             })
     }
 
@@ -101,7 +160,9 @@ export default class UserBox extends Component {
         fetch(`http://localhost:3000/users?${new URLSearchParams(query)}`)
             .then((response) => response.json())
             .then((data) => {
-                this.setState({ users: data.data })
+                this.setState({
+                    users: data.data
+                })
             })
     }
 
@@ -113,9 +174,23 @@ export default class UserBox extends Component {
                         <h1>Phone Book Apps</h1>
                     </div>
                     <div className="card-body">
+                        <div className="card">
+                            <div className="card-header">
+                                <strong>Searching</strong>
+                            </div>
+                            <div className="card-body">
+                                <UserForm submit={this.searchUser} submitLabel="search" />
+                            </div>
+                        </div>
+                        <hr />
                         <UserForm submit={this.addUser} />
                     </div>
-                    <UserList data={this.state.users} remove={this.removeUser} />
+                    <UserList
+                        data={this.state.users}
+                        remove={this.removeUser}
+                        resend={this.resendUser}
+                        update={this.updateUser}
+                    />
                     <div className="card-footer">
 
                     </div>

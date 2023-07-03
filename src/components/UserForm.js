@@ -22,8 +22,8 @@ export default class UserForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
-        this.props.submit({name: this.state.name, phone: this.state.phone})
-        this.setState({name: '', phone: ''})
+        this.props.submit({ name: this.state.name, phone: this.state.phone })
+        this.setState({ name: '', phone: ''})
     }
 
     render() {
@@ -35,13 +35,15 @@ export default class UserForm extends Component {
                         <input type="text" className="form-control" id="name" name="name" placeholder="name" onChange={this.handleInputChange} value={this.state.name}></input>
                     </div>
                 </div>
-                <div className="row mb-3">
-                    <label htmlFor="phone" className="col-sm-2 col-form-label">Phone</label>
-                    <div className="col-sm-10">
-                        <input type="text" className="form-control" id="phone" name="phone" placeholder="phone" onChange={this.handleInputChange} value={this.state.phone}></input>
+                {this.props.submitLabel !== "search" &&
+                    <div className="row mb-3">
+                        <label htmlFor="phone" className="col-sm-2 col-form-label">Phone</label>
+                        <div className="col-sm-10">
+                            <input type="text" className="form-control" id="phone" name="phone" placeholder="phone" onChange={this.handleInputChange} value={this.state.phone}></input>
+                        </div>
                     </div>
-                </div>
-                <button type="submit" className="btn btn-primary"><i className="bi bi-plus-lg">Add</i></button>
+                }
+                <button type="submit" className="btn btn-primary"><i className="bi bi-plus-lg">{this.props.submitLabel || "Add"}</i></button>
             </form>
         )
     }

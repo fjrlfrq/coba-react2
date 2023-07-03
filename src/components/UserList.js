@@ -13,13 +13,15 @@ export default function UserList(props) {
             </thead>
             <tbody>
                 {props.data.map((user, index) => (
-                    <UserItem 
-                    key={index} 
-                    id={user._id}
-                    no={index + 1} 
-                    name={user.name} 
-                    phone={user.phone} 
-                    remove={()=>props.remove(user.id)} />
+                    <UserItem
+                        key={index}
+                        id={user._id}
+                        no={index + 1}
+                        user={user}
+                        remove={() => props.remove(user.id)}
+                        resend={() => props.resend(user)}
+                        update={() => props.update}
+                    />
                 ))}
             </tbody>
         </table>
