@@ -1,7 +1,16 @@
 import UserItem from "./UserItem"
 
 export default function UserList(props) {
+
+    const scrolling = (event) => {
+        var element = event.target
+        if (element.scrollHeight - element.scrollTop === element.clientHeight){
+            console.log('scrolled')
+        }
+    }
+
     return (
+        <div onScroll={scrolling} style={{ overflowY: "scroll", height: 200 }}>
         <table className="table table-striped">
             <thead>
                 <tr>
@@ -25,5 +34,6 @@ export default function UserList(props) {
                 ))}
             </tbody>
         </table>
+        </div>
     )
 }

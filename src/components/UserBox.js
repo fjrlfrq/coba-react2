@@ -110,19 +110,17 @@ export default class UserBox extends Component {
             })
     }
 
-    removeUser = (_id) => {
-        fetch(`http://localhost:3000/users/${_id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }).then((response) => response.json()).then((data) => {
-            this.setState(function (state, props) {
-                return {
-                    users: state.users.filter(item => item._id !== data.data._id)
-                }
+    searchUser = (query = {}) => {
+        fetch(`http://localhost:3000/users?${new URLSearchParams(query)}`)
+            .then((response) => response.json())
+            .then((data) => {
+                this.setState({
+                    users: data.data.map(item => {
+                        item.sent = true
+                        return item
+                    })
+                })
             })
-        })
     }
 
     resendUser = ({ _id, name, phone }) => {
@@ -156,14 +154,19 @@ export default class UserBox extends Component {
             })
     }
 
-    searchUser = (query = {}) => {
-        fetch(`http://localhost:3000/users?${new URLSearchParams(query)}`)
-            .then((response) => response.json())
-            .then((data) => {
-                this.setState({
-                    users: data.data
-                })
+    removeUser = (_id) => {
+        fetch(`http://localhost:3000/users/${_id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((response) => response.json()).then((data) => {
+            this.setState(function (state, props) {
+                return {
+                    users: state.users.filter(item => item._id !== data.data._id)
+                }
             })
+        })
     }
 
     render() {
