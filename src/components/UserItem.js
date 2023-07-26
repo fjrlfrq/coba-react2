@@ -1,4 +1,4 @@
-import react, { Component } from "react"
+import React, { Component } from "react"
 
 export default class UserItem extends Component {
 
@@ -15,11 +15,9 @@ export default class UserItem extends Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        const phone = target.phone;
 
         this.setState({
             [name]: value,
-            [phone]: value
         });
     }
 
@@ -36,12 +34,19 @@ export default class UserItem extends Component {
     }
     
     saveEdit = () => {
-        this.props.update({_id : this.props.user._id, name: this.props.user.name, phone: this.props.user.phone})
+        this.props.update(
+            this.state.name,
+            this.state.phone
+        )
         this.setState({
             isEdit: false
         })
     }
-
+    cancelHandleModalShowHide() {
+        this.setState({
+            showHide: false
+        })
+    }
 
     render() {
         return (
@@ -73,25 +78,27 @@ export default class UserItem extends Component {
                         /> 
                         :
                         this.state.phone
+                        
                     }
                 </td>
                 {this.props.user.sent ?
                     this.state.isEdit ?
                         <td>
-                            <button type="button" className="btn btn-info" onClick={this.saveEdit}>Save</button>
-                            <button type="button" className="btn btn-warning" onClick={this.handleCancel}>Cancel</button>
+                            <button type="button" className="btn btn-info" onClick={this.saveEdit}><i className="bi bi-download"></i>Save</button>
+                            <button type="button" className="btn btn-warning" onClick={this.handleCancel}><i className="bi bi-x"></i>Cancel</button>
                         </td>
                         :
                         <td>
-                            <button type="button" className="btn btn-success" onClick={this.handleEdit}>Edit</button>
-                            <button type="button" className="btn btn-danger" onClick={this.props.remove}>Delete</button>
+                            <button type="button" className="btn btn-success" onClick={this.handleEdit}><i className="bi bi-pencil"></i>Edit</button>
+                            <button type="button" className="btn btn-danger" onClick={this.props.remove}><i className="bi bi-trash"></i>Delete</button>
                         </td>
                     :
                     <td>
-                        <button type="button" className="btn btn-warning" onClick={this.props.resend}>Resend</button>
+                        <button type="button" className="btn btn-warning" onClick={this.props.resend}><i className="bi bi-send"></i>Resend</button>
                     </td>
                 }
             </tr>
+            
         )
     }
 }

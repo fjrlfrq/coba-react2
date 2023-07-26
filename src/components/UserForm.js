@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react"
 
 export default class UserForm extends Component {
 
@@ -14,7 +14,6 @@ export default class UserForm extends Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-
         this.setState({
             [name]: value
         });
@@ -22,28 +21,94 @@ export default class UserForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
+        this.props.add({ name: this.state.name, phone: this.state.phone })
+        this.setState({ name: '', phone: '' })
+    }
+
+    handleSearch = (event) => {
+        event.preventDefault()
         this.props.submit({ name: this.state.name, phone: this.state.phone })
-        this.setState({ name: '', phone: ''})
+    }
+
+    handleSearchCancel = (event) => {
+        event.preventDefault()
+        this.props.cancelSearch()
+        this.setState({ name: '', phone: '' })
+
     }
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <div className="row mb-3">
-                    <label htmlFor="name" className="col-sm-2 col-form-label">Name</label>
-                    <div className="col-sm-10">
-                        <input type="text" className="form-control" id="name" name="name" placeholder="name" onChange={this.handleInputChange} value={this.state.name}></input>
+            <form onSubmit={this.props.submitLabel ? this.handleSearch : this.handleSubmit}>
+                <div className="row g-1 align-items-center">
+                    <div className="col-auto">
+                        <label
+                            htmlFor="name"
+                            className="col-form-label">
+                            <strong>Name</strong>
+                        </label>
+                    </div>
+                    <div className="col-auto">
+                        <input
+                            type="teks"
+                            id="name"
+                            name="name"
+                            className="form-control"
+                            onChange={this.handleInputChange}
+                            value={this.state.name}
+                        />
+                    </div>
+
+                    <div className="col-auto">
+                        <label
+                            htmlFor="phone"
+                            className="col-form-label">
+                            <strong>Phone</strong>
+                        </label>
+                    </div>
+                    <div className="col-auto">
+                        <input
+                            type="teks"
+                            id="phone"
+                            name="phone"
+                            className="form-control"
+                            onChange={this.handleInputChange}
+                            value={this.state.phone}
+                        />
+                    </div>
+
+                    <div className="col-auto">
+                        <button type="submit" className="btn btn-info" >
+                            {this.props.submitLabel !== "search" &&
+                                <i className="bi bi-search"></i>
+                            }
+                            {this.props.submitLabel === "search" &&
+                                <i className="bi bi-search"></i>
+                            }
+                            &nbsp;
+                            {this.props.submitLabel || "save"} </button>
+                        &nbsp;
+                        {this.props.submitLabel !== "search" &&
+                            <button type="submit"
+                                onClick={this.props.cancel}
+                                className="btn btn-warning"
+                                style={{ color: "black" }}>
+                                <i className="bi bi-x-circle-fill"></i>
+                                &nbsp;
+                                cancel</button>
+                        }
+                        {this.props.submitLabel === "search" &&
+                            <button type="submit"
+                                onClick={this.handleSearchCancel}
+                                className="btn btn-warning"
+                                style={{ color: "black" }}>
+                                <i className="bi bi-x-circle-fill"></i>
+                                &nbsp;
+                                cancel</button>
+                        }
+
                     </div>
                 </div>
-                {this.props.submitLabel !== "search" &&
-                    <div className="row mb-3">
-                        <label htmlFor="phone" className="col-sm-2 col-form-label">Phone</label>
-                        <div className="col-sm-10">
-                            <input type="text" className="form-control" id="phone" name="phone" placeholder="phone" onChange={this.handleInputChange} value={this.state.phone}></input>
-                        </div>
-                    </div>
-                }
-                <button type="submit" className="btn btn-primary"><i className="bi bi-plus-lg">{this.props.submitLabel || "Add"}</i></button>
             </form>
         )
     }
