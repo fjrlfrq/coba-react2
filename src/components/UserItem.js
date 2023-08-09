@@ -1,104 +1,165 @@
-import React, { Component } from "react"
+import React, { Fragment, useCallback, useState } from "react"
+import { Button, Modal } from 'react-bootstrap'
+import { useDispatch } from "react-redux"
 
-export default class UserItem extends Component {
+export default function UserItem(props) {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            name: props.user.name,
-            phone: props.user.phone,
-            isEdit: false
-        }
-    }
+    const dispatch = useDispatch()
 
-    handleInputChange = (event) => {
+    const [user, setUser] = useState({
+        name: props.data.name,
+        phone: props.data.phone,
+        isEdit: false,
+        showHide: false
+    })
+
+    const handleInputChange = (event) => {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-
-        this.setState({
+        const phone = target.phone
+        setUser({
+            ...user,
             [name]: value,
+            [phone]: value
         });
     }
 
-    handleEdit = () => {
-        this.setState({
+    const handleEdit = useCallback((event) => {
+        event.preventDefault()
+        setUser({
+            name: user.name,
+            phone: user.phone,
             isEdit: true
-        })
-    }
+        });
+    }, [user])
 
-    handleCancel = () => {
-        this.setState({
+    const handleCancel = useCallback((event) => {
+        event.preventDefault()
+        setUser({
+            name: props.data.name,
+            phone: props.data.phone,
             isEdit: false
-        })
-    }
-    
-    saveEdit = () => {
-        this.props.update(
-            this.state.name,
-            this.state.phone
-        )
-        this.setState({
+        });
+    }, [])
+
+    const saveEdit = useCallback((event) => {
+        event.preventDefault()
+        props.update(user.name, user.phone)
+        setUser({
+            ...user,
+            name: user.name,
+            phone: user.phone,
             isEdit: false
+        });
+    }, [dispatch, user])
+
+    const handleModalShowHide = useCallback(() => {
+        setUser({
+            showHide: true
         })
-    }
-    cancelHandleModalShowHide() {
-        this.setState({
+    }, [])
+
+    const cancelHandleModalShowHide = useCallback((event) => {
+        event.preventDefault()
+        setUser({
+            name: props.data.name,
+            phone: props.data.phone,
             showHide: false
         })
-    }
+    }, [dispatch, user])
 
-    render() {
-        return (
+    return (
+        <fragment>
             <tr>
-                <td>{this.props.no}</td>
+                <td>{props.no}</td>
                 <td>
-                    {this.state.isEdit ?
+                    {user.isEdit ?
                         <input
                             className="form-control"
                             type="text"
                             name="name"
-                            value={this.state.name}
+                            value={user.name}
                             placeholder="Masukkan nama"
-                            onChange={this.handleInputChange}
-                        /> 
+                            onChange={handleInputChange}
+                        />
                         :
-                        this.state.name
+                        user.name
                     }
                 </td>
                 <td>
-                    {this.state.isEdit ?
+                    {user.isEdit ?
                         <input
                             className="form-control"
                             type="text"
                             name="phone"
-                            value={this.state.phone}
+                            value={user.phone}
                             placeholder="Masukkan nomor"
-                            onChange={this.handleInputChange}
-                        /> 
+                            onChange={handleInputChange}
+                        />
                         :
-                        this.state.phone
-                        
+                        user.phone
+
                     }
                 </td>
-                {this.props.user.sent ?
-                    this.state.isEdit ?
+                {props.data.sent ?
+                    user.isEdit ?
                         <td>
-                            <button type="button" className="btn btn-info" onClick={this.saveEdit}><i className="bi bi-download"></i>Save</button>
-                            <button type="button" className="btn btn-warning" onClick={this.handleCancel}><i className="bi bi-x"></i>Cancel</button>
+                            <button type="button"
+                                className="btn btn-info"
+                                onClick={saveEdit}>
+                                <i className="bi bi-download"></i>
+                                &nbsp;
+                                save
+                            </button>
+                            &nbsp;
+                            <button type="button"
+                                className="btn btn-warning"
+                                onClick={handleCancel}
+                                style={{ color: "white" }}>
+                                <i className="bi bi-x"></i>
+                                &nbsp;
+                                cancel
+                            </button>
                         </td>
                         :
                         <td>
-                            <button type="button" className="btn btn-success" onClick={this.handleEdit}><i className="bi bi-pencil"></i>Edit</button>
-                            <button type="button" className="btn btn-danger" onClick={this.props.remove}><i className="bi bi-trash"></i>Delete</button>
+                            <button type="button"
+                                className="btn btn-success"
+                                onClick={handleEdit}>
+                                <i className="bi bi-pencil"></i>
+                                &nbsp;
+                                edit
+                            </button>
+                            &nbsp;
+                            <button type="button"
+                                className="btn btn-danger"
+                                onClick={() => handleModalShowHide()}>
+                                <i className="bi bi-trash"></i>
+                                &nbsp;
+                                delete
+                            </button>
                         </td>
                     :
                     <td>
-                        <button type="button" className="btn btn-warning" onClick={this.props.resend}><i className="bi bi-send"></i>Resend</button>
+                        <button type="button" className="btn btn-warning" onClick={props.resend}><i className="bi bi-send"></i>Resend</button>
                     </td>
                 }
             </tr>
-            
-        )
-    }
+            <Modal show={user.showHide}>
+                <Modal.Header >
+                    <Modal.Title>Deleted Confirmation</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure, you want delete <b>{props.data.name}</b></Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={cancelHandleModalShowHide}>
+                        No
+                    </Button>
+                    <Button variant="primary" onClick={props.remove}>
+                        Yes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </fragment>
+    )
 }
