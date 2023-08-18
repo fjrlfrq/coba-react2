@@ -6,7 +6,7 @@ import {
     create,
     resetSearch,
     searchUserAsync,
-} from '../reducers/users';
+} from '../reducers/users'
 
 export default function UserForm(props) {
 
@@ -15,7 +15,7 @@ export default function UserForm(props) {
     const [user, setUser] = useState({
         name: '',
         phone: ''
-    });
+    })
 
     const handleInputChange = (event) => {
         const target = event.target;
@@ -24,7 +24,7 @@ export default function UserForm(props) {
         setUser({
             ...user,
             [name]: value,
-        });
+        })
     }
 
     const handleSubmit = useCallback((event) => {
@@ -78,14 +78,13 @@ export default function UserForm(props) {
                     <button type="submit" className="btn btn-success" 
                     style={{backgroundColor: '#1159a6', borderWidth: 0}}>
                         {props.submitLabel !== "search" &&
-                            <i className="bi bi-search"></i>
+                            <i className="bi bi-download"></i>
                         }
                         {props.submitLabel === "search" &&
                             <i className="bi bi-search"></i>
                         }
                         &nbsp;
-                        {props.submitLabel || <i class="bi bi-download">save</i>
-                           
+                        {props.submitLabel || "save"                 
                         }
                     </button>
                     &nbsp;
@@ -93,8 +92,8 @@ export default function UserForm(props) {
                         <button type="submit"
                             onClick={props.cancel}
                             className="btn btn-warning"
-                            style={{ backgroundColor: '#f2af05', borderWidth: 0, color: 'white' }}>
-                            <i className="fa-solid fa-ban"></i>
+                            style={{ backgroundColor: 'a-so#f2af05', borderWidth: 0, color: 'white' }}>
+                            <i className="bi bi-x-lg"></i>
                             &nbsp;
                             cancel</button>
                     }
@@ -103,7 +102,7 @@ export default function UserForm(props) {
                             onClick={cancelSearch}
                             className="btn btn-warning"
                             style={{ backgroundColor: '#f2af05', borderWidth: 0, color: 'white' }}>
-                            <i className="fa-solid fa-ban"></i>
+                            <i className="bi bi-arrow-clockwise"></i>
                             &nbsp;
                             reset</button>
                     }

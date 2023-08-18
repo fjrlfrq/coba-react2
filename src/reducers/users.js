@@ -8,66 +8,66 @@ const initialState = {
         pages: 0
     },
     status: 'idle',
-};
+}
 
 export const readUserAsync = createAsyncThunk(
-    'users/readUser',
+    'user/readUser',
     async () => {
         try {
-            const response = await readUser();
-            return response.data.data;
+            const response = await readUser()
+            return response.data.data
         } catch (error) {
-            console.log('readUser error', error);
+            console.log('readUser error', error)
         }
     }
-);
+)
 
 export const createUserAsync = createAsyncThunk(
-    'users/createUser',
+    'user/createUser',
     async ({ id, name, phone }, thunkAPI) => {
         const { getState } = thunkAPI
         let state = getState()
         try {
-            const response = await createUser(name, phone);
+            const response = await createUser(name, phone)
             if (!state.user.params.name && !state.user.params.phone) {
-                return { success: true, id, user: response.data.data };
+                return { success: true, id, user: response.data.data }
             } else {
-                return { success: true };
+                return { success: true }
             }
         } catch (error) {
-            console.log('createUser error', error);
-            return { success: false, id };
+            console.log('createUser error', error)
+            return { success: false, id }
         }
     }
-);
+)
 
 export const updateUserAsync = createAsyncThunk(
-    'users/updateUser',
+    'user/updateUser',
     async ({ id, name, phone }) => {
         try {
-            const response = await updateUser(id, name, phone);
-            return { success: true, id, user: response.data.data };
+            const response = await updateUser(id, name, phone)
+            return { success: true, id, user: response.data.data }
         } catch (error) {
-            console.log('createUser error', error);
-            return { success: false, id };
+            console.log('createUser error', error)
+            return { success: false, id }
         }
     }
-);
+)
 
 export const deleteUserAsync = createAsyncThunk(
-    'users/deleteUser',
+    'user/deleteUser',
     async (id) => {
         try {
-            await deleteUser(id);
+            await deleteUser(id)
             return id
         } catch (error) {
-            console.log('deleteUser error', error);
+            console.log('deleteUser error', error)
         }
     }
-);
+)
 
 export const loadUserAsync = createAsyncThunk(
-    'users/loadUser',
+    'user/loadUser',
     async (arg, thunkAPI) => {
         const { getState } = thunkAPI
         let state = getState()
@@ -77,21 +77,21 @@ export const loadUserAsync = createAsyncThunk(
                 page: state.user.params.page + 1
             }
             try {
-                const response = await loadUser(params);
-                return { value: response.data.data.users, params };
+                const response = await loadUser(params)
+                return { value: response.data.data.users, params }
             } catch (error) {
-                console.log('loadUser error', error);
-                return { success: false };
+                console.log('loadUser error', error)
+                return { success: false }
             }
         }
         else {
             return {}
         }
     }
-);
+)
 
 export const searchUserAsync = createAsyncThunk(
-    'users/searchUser',
+    'user/searchUser',
     async (query, thunkAPI) => {
         const { getState } = thunkAPI
         let state = getState()
@@ -101,21 +101,21 @@ export const searchUserAsync = createAsyncThunk(
             page: 1
         }
         try {
-            const response = await searchUser(params);
+            const response = await searchUser(params)
             params = {
                 ...params,
                 pages: response.data.data.pages
             }
-            return { value: response.data.data.users, params };
+            return { value: response.data.data.users, params }
         } catch (error) {
-            console.log('searchUser error', error);
-            return { success: false };
+            console.log('searchUser error', error)
+            return { success: false }
         }
     }
-);
+)
 
 export const userSlice = createSlice({
-    name: 'users',
+    name: 'user',
     initialState,
     reducers: {
         add: (state, action) => {
@@ -232,11 +232,11 @@ export const userSlice = createSlice({
                 state.params = action.payload.params
             })
     },
-});
+})
 
-export const { add, update, reset } = userSlice.actions;
+export const { add, update, reset } = userSlice.actions
 
-export const selectUser = (state) => state.user.value;
+export const selectUser = (state) => state.user.value
 
 export const create = (name, phone) => (dispatch, getState) => {
     const id = Date.now()
@@ -245,16 +245,16 @@ export const create = (name, phone) => (dispatch, getState) => {
         dispatch(add({ id, name, phone }))
     }
     dispatch(createUserAsync({ id, name, phone }))
-};
+}
  
 export const edit = (id, name, phone) => (dispatch, getState) => {
     dispatch(update({ name, phone }))
     dispatch(updateUserAsync({ id, name, phone }))
-};
+}
 
 export const resetSearch = () => async (dispatch, getState) => {
     await dispatch(reset())
     dispatch(loadUserAsync())
-};
+}
 
-export default userSlice.reducer;
+export default userSlice.reducer

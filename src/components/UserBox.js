@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react"
-import UserForm from "../containers/UserForm";
-import UserList from "../containers/UserList";
+import UserForm from "../containers/UserForm"
+import UserList from "../containers/UserList"
 import { useDispatch } from 'react-redux'
 
 export default function User(props) {
@@ -9,7 +9,7 @@ export default function User(props) {
 
     const [user, setUser] = useState({
         isAdd: false,
-    });
+    })
 
     const handleAdd = useCallback((event) => {
         event.preventDefault()
@@ -22,7 +22,7 @@ export default function User(props) {
         event.preventDefault()
         setUser({
             isAdd: false
-        });
+        })
     }, [dispatch])
 
     return (

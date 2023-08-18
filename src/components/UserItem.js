@@ -1,6 +1,4 @@
 import React, { Fragment, useCallback, useState } from "react"
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faTrashCan, faPen } from '@fortawesome/free-solid-svg-icons'
 import { Button, Modal } from 'react-bootstrap'
 import { useDispatch } from "react-redux"
 
@@ -16,15 +14,15 @@ export default function UserItem(props) {
     })
 
     const handleInputChange = (event) => {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
+        const target = event.target
+        const value = target.type === 'checkbox' ? target.checked : target.value
+        const name = target.name
         const phone = target.phone
         setUser({
             ...user,
             [name]: value,
             [phone]: value
-        });
+        })
     }
 
     const handleEdit = useCallback((event) => {
@@ -110,7 +108,7 @@ export default function UserItem(props) {
                                 className="btn btn-primary"
                                 style={{ backgroundColor: '#035e07', borderWidth: 0 }}
                                 onClick={saveEdit}>
-                                <i className="fa-solid fa-floppy-disk"></i>
+                                <i className="bi bi-download"></i>
                                 &nbsp;
                                 save
                             </button>
@@ -119,7 +117,7 @@ export default function UserItem(props) {
                                 className="btn btn-warning"
                                 onClick={handleCancel}
                                 style={{ color: "white", backgroundColor: '#800503', borderWidth: 0 }}>
-                                <i className="fa-solid fa-ban"></i>
+                                <i className="bi bi-x-lg"></i>
                                 &nbsp;
                                 cancel
                             </button>
@@ -130,7 +128,7 @@ export default function UserItem(props) {
                                 className="btn btn-success"
                                 style={{ backgroundColor: '#04d10e', borderWidth: 0 }}
                                 onClick={handleEdit}>
-                                {/* <FontAwesomeIcon icon={faPen} /> */}
+                                <i className="bi bi-pencil"></i>
                                 &nbsp;
                                 edit
                             </button>
@@ -139,7 +137,7 @@ export default function UserItem(props) {
                                 className="btn btn-danger"
                                 style={{ backgroundColor: '#f2190a', borderWidth: 0 }}
                                 onClick={() => handleModalShowHide()}>
-                                {/* <FontAwesomeIcon icon={faTrashCan} /> */}
+                                <i className="bi bi-trash"></i>
                                 &nbsp;
                                 delete
                             </button>
@@ -149,7 +147,8 @@ export default function UserItem(props) {
                         <button type="button"
                             className="btn btn-warning"
                             onClick={props.resend}
-                            style={{ backgroundColor: '#ffdf2b', borderWidth: 0, color:'white' }}>
+                            style={{ backgroundColor: '#ffdf2b', borderWidth: 0, color: 'white' }}>
+                            <i class="bi bi-send"></i>
                             resend
                         </button>
                     </td>
@@ -158,14 +157,14 @@ export default function UserItem(props) {
 
             <Modal show={user.showHide}>
                 <Modal.Header >
-                    <Modal.Title style={{color:'#2bb5ff'}}>Deleted Confirmation</Modal.Title>
+                    <Modal.Title style={{ color: '#2bb5ff' }}>Deleted Confirmation</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Are you sure, you want delete <b style={{color:'#2bb5ff'}}>{props.data.name}</b></Modal.Body>
+                <Modal.Body>Are you sure, you want delete <b style={{ color: '#2bb5ff' }}>{props.data.name}</b></Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={cancelHandleModalShowHide} style={{ backgroundColor: '#f2190a', borderWidth: 0, color:'white' }}>
+                    <Button variant="secondary" onClick={cancelHandleModalShowHide} style={{ backgroundColor: '#f2190a', borderWidth: 0, color: 'white' }}>
                         No
                     </Button>
-                    <Button variant="primary" onClick={props.remove} style={{ backgroundColor: '#04d10e', borderWidth: 0, color:'white' }}>
+                    <Button variant="primary" onClick={props.remove} style={{ backgroundColor: '#04d10e', borderWidth: 0, color: 'white' }}>
                         Yes
                     </Button>
                 </Modal.Footer>
