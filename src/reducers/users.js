@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { readUser, createUser, updateUser, deleteUser, loadUser, searchUser } from '../actions/users';
+import { readUser, createUser, updateUser, deleteUser, loadUser, searchUser } from './index';
 
 const initialState = {
     value: [],
@@ -246,7 +246,7 @@ export const create = (name, phone) => (dispatch, getState) => {
     }
     dispatch(createUserAsync({ id, name, phone }))
 };
-
+ 
 export const edit = (id, name, phone) => (dispatch, getState) => {
     dispatch(update({ name, phone }))
     dispatch(updateUserAsync({ id, name, phone }))

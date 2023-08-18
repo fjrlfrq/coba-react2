@@ -1,4 +1,6 @@
 import React, { Fragment, useCallback, useState } from "react"
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faTrashCan, faPen } from '@fortawesome/free-solid-svg-icons'
 import { Button, Modal } from 'react-bootstrap'
 import { useDispatch } from "react-redux"
 
@@ -70,45 +72,45 @@ export default function UserItem(props) {
     }, [dispatch, user])
 
     return (
-        <fragment>
+        <Fragment>
             <tr>
                 <td>{props.no}</td>
                 <td>
                     {user.isEdit ?
                         <input
-                            className="form-control"
-                            type="text"
+                            type="teks"
                             name="name"
                             value={user.name}
-                            placeholder="Masukkan nama"
                             onChange={handleInputChange}
+                            className="form-control"
                         />
                         :
                         user.name
                     }
                 </td>
+
                 <td>
                     {user.isEdit ?
                         <input
-                            className="form-control"
-                            type="text"
+                            type="teks"
                             name="phone"
                             value={user.phone}
-                            placeholder="Masukkan nomor"
                             onChange={handleInputChange}
+                            className="form-control"
                         />
                         :
                         user.phone
-
                     }
                 </td>
+
                 {props.data.sent ?
                     user.isEdit ?
                         <td>
                             <button type="button"
-                                className="btn btn-info"
+                                className="btn btn-primary"
+                                style={{ backgroundColor: '#035e07', borderWidth: 0 }}
                                 onClick={saveEdit}>
-                                <i className="bi bi-download"></i>
+                                <i className="fa-solid fa-floppy-disk"></i>
                                 &nbsp;
                                 save
                             </button>
@@ -116,8 +118,8 @@ export default function UserItem(props) {
                             <button type="button"
                                 className="btn btn-warning"
                                 onClick={handleCancel}
-                                style={{ color: "white" }}>
-                                <i className="bi bi-x"></i>
+                                style={{ color: "white", backgroundColor: '#800503', borderWidth: 0 }}>
+                                <i className="fa-solid fa-ban"></i>
                                 &nbsp;
                                 cancel
                             </button>
@@ -126,40 +128,49 @@ export default function UserItem(props) {
                         <td>
                             <button type="button"
                                 className="btn btn-success"
+                                style={{ backgroundColor: '#04d10e', borderWidth: 0 }}
                                 onClick={handleEdit}>
-                                <i className="bi bi-pencil"></i>
+                                {/* <FontAwesomeIcon icon={faPen} /> */}
                                 &nbsp;
                                 edit
                             </button>
                             &nbsp;
                             <button type="button"
                                 className="btn btn-danger"
+                                style={{ backgroundColor: '#f2190a', borderWidth: 0 }}
                                 onClick={() => handleModalShowHide()}>
-                                <i className="bi bi-trash"></i>
+                                {/* <FontAwesomeIcon icon={faTrashCan} /> */}
                                 &nbsp;
                                 delete
                             </button>
                         </td>
                     :
                     <td>
-                        <button type="button" className="btn btn-warning" onClick={props.resend}><i className="bi bi-send"></i>Resend</button>
+                        <button type="button"
+                            className="btn btn-warning"
+                            onClick={props.resend}
+                            style={{ backgroundColor: '#ffdf2b', borderWidth: 0, color:'white' }}>
+                            resend
+                        </button>
                     </td>
                 }
             </tr>
+
             <Modal show={user.showHide}>
                 <Modal.Header >
-                    <Modal.Title>Deleted Confirmation</Modal.Title>
+                    <Modal.Title style={{color:'#2bb5ff'}}>Deleted Confirmation</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Are you sure, you want delete <b>{props.data.name}</b></Modal.Body>
+                <Modal.Body>Are you sure, you want delete <b style={{color:'#2bb5ff'}}>{props.data.name}</b></Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={cancelHandleModalShowHide}>
+                    <Button variant="secondary" onClick={cancelHandleModalShowHide} style={{ backgroundColor: '#f2190a', borderWidth: 0, color:'white' }}>
                         No
                     </Button>
-                    <Button variant="primary" onClick={props.remove}>
+                    <Button variant="primary" onClick={props.remove} style={{ backgroundColor: '#04d10e', borderWidth: 0, color:'white' }}>
                         Yes
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </fragment>
+
+        </Fragment>
     )
 }

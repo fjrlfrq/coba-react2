@@ -1,5 +1,7 @@
-import React, { useCallback, useState, useEffect, useRef } from "react"
+import React, { useCallback, useState} from "react"
+
 import { useDispatch } from 'react-redux'
+
 import {
     create,
     resetSearch,
@@ -9,16 +11,11 @@ import {
 export default function UserForm(props) {
 
     const dispatch = useDispatch()
-    const inputRef = useRef(null)
 
     const [user, setUser] = useState({
         name: '',
         phone: ''
     });
-
-    useEffect(() => {
-        inputRef.current.focus()
-    }, []);
 
     const handleInputChange = (event) => {
         const target = event.target;
@@ -47,37 +44,28 @@ export default function UserForm(props) {
     }
 
     return (
-        <form onSubmit={props.submitLabel ? handleSearch : handleSubmit}>
-            <div className="row g-1 align-items-center">
-                <div className="col-auto">
-                    <label
-                        htmlFor="name"
-                        className="col-form-label">
-                        <strong>Name</strong>
-                    </label>
-                </div>
-                <div className="col-auto">
+        <form onSubmit={
+            props.submitLabel
+                ? handleSearch :
+                handleSubmit}>
+            <div className="row g-3 align-items-center">
+
+                <div className="col">
                     <input
                         type="teks"
+                        placeholder="Enter your name"
                         id="name"
                         name="name"
                         className="form-control"
                         onChange={handleInputChange}
                         value={user.name}
-                        ref={inputRef}
                     />
                 </div>
 
-                <div className="col-auto">
-                    <label
-                        htmlFor="phone"
-                        className="col-form-label">
-                        <strong>Phone</strong>
-                    </label>
-                </div>
-                <div className="col-auto">
+                <div className="col">
                     <input
                         type="teks"
+                        placeholder="Enter your number"
                         id="phone"
                         name="phone"
                         className="form-control"
@@ -87,22 +75,24 @@ export default function UserForm(props) {
                 </div>
 
                 <div className="col-auto">
-                    <button type="submit" className="btn btn-info" >
+                    <button type="submit" className="btn btn-success" 
+                    style={{backgroundColor: '#1159a6', borderWidth: 0}}>
                         {props.submitLabel !== "search" &&
-                            <i className="bi bi-search"></i>
+                            <i className="fa-regular fa-circle-check"></i>
                         }
                         {props.submitLabel === "search" &&
-                            <i className="bi bi-search"></i>
+                            <i className="fa-solid fa-magnifying-glass"></i>
                         }
                         &nbsp;
-                        {props.submitLabel || "save"} </button>
+                        {props.submitLabel || "save"}
+                    </button>
                     &nbsp;
                     {props.submitLabel !== "search" &&
                         <button type="submit"
                             onClick={props.cancel}
                             className="btn btn-warning"
-                            style={{ color: "black" }}>
-                            <i className="bi bi-x-circle-fill"></i>
+                            style={{ backgroundColor: '#f2af05', borderWidth: 0, color: 'white' }}>
+                            <i className="fa-solid fa-ban"></i>
                             &nbsp;
                             cancel</button>
                     }
@@ -110,14 +100,15 @@ export default function UserForm(props) {
                         <button type="submit"
                             onClick={cancelSearch}
                             className="btn btn-warning"
-                            style={{ color: "black" }}>
-                            <i className="bi bi-x-circle-fill"></i>
+                            style={{ backgroundColor: '#f2af05', borderWidth: 0, color: 'white' }}>
+                            <i className="fa-solid fa-ban"></i>
                             &nbsp;
-                            cancel</button>
+                            reset</button>
                     }
 
                 </div>
             </div>
         </form>
+
     )
 }
