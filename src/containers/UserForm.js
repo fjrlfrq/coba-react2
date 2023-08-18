@@ -78,13 +78,15 @@ export default function UserForm(props) {
                     <button type="submit" className="btn btn-success" 
                     style={{backgroundColor: '#1159a6', borderWidth: 0}}>
                         {props.submitLabel !== "search" &&
-                            <i className="fa-regular fa-circle-check"></i>
+                            <i className="bi bi-search"></i>
                         }
                         {props.submitLabel === "search" &&
-                            <i className="fa-solid fa-magnifying-glass"></i>
+                            <i className="bi bi-search"></i>
                         }
                         &nbsp;
-                        {props.submitLabel || "save"}
+                        {props.submitLabel || <i class="bi bi-download">save</i>
+                           
+                        }
                     </button>
                     &nbsp;
                     {props.submitLabel !== "search" &&
