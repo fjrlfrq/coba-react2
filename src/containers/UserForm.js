@@ -1,4 +1,4 @@
-import React, { useCallback, useState} from "react"
+import React, { useCallback, useState } from "react"
 
 import { useDispatch } from 'react-redux'
 
@@ -75,8 +75,8 @@ export default function UserForm(props) {
                 </div>
 
                 <div className="col-auto">
-                    <button type="submit" className="btn btn-success" 
-                    style={{backgroundColor: '#1159a6', borderWidth: 0}}>
+                    <button type="submit" className="btn btn-success"
+                        style={{ backgroundColor: '#1159a6', borderWidth: 0 }}>
                         {props.submitLabel !== "search" &&
                             <i className="bi bi-download"></i>
                         }
@@ -84,7 +84,7 @@ export default function UserForm(props) {
                             <i className="bi bi-search"></i>
                         }
                         &nbsp;
-                        {props.submitLabel || "save"                 
+                        {props.submitLabel || "Save"
                         }
                     </button>
                     &nbsp;
@@ -93,9 +93,9 @@ export default function UserForm(props) {
                             onClick={props.cancel}
                             className="btn btn-warning"
                             style={{ backgroundColor: 'a-so#f2af05', borderWidth: 0, color: 'white' }}>
-                            <i className="bi bi-x-lg"></i>
+                            <i class="bi bi-arrow-left"></i>
                             &nbsp;
-                            cancel</button>
+                            Back</button>
                     }
                     {props.submitLabel === "search" &&
                         <button type="submit"
@@ -104,7 +104,7 @@ export default function UserForm(props) {
                             style={{ backgroundColor: '#f2af05', borderWidth: 0, color: 'white' }}>
                             <i className="bi bi-arrow-clockwise"></i>
                             &nbsp;
-                            reset</button>
+                            Reset</button>
                     }
 
                 </div>
